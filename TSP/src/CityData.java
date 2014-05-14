@@ -1,4 +1,4 @@
-public class Data {
+public class CityData {
 
     public static final String[] CITY_NAMES = new String[] {
             "Stockholm", "Goteborg", "Malmo", "Uppsala", "Vasteras", "Orebro", "Linkoping",
