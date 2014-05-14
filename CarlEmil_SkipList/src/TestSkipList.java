@@ -1,7 +1,4 @@
-import static org.junit.Assert.fail;
-
 import org.junit.Before;
-import org.junit.Test;
 
 public class TestSkipList {
 
@@ -16,6 +13,9 @@ public class TestSkipList {
 	public void testInsertTop() {
 
 		int c = skipList.flipCoins();
+
+		skipList.insert(0);
+
 		System.out.println("c: " + c);
 		skipList.print();
 	}
