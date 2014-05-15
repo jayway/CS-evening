@@ -6,7 +6,7 @@ public class TSPSolver {
         int h = 9;
         int size = 10;
 
-        int[] data = RandomData.getRandomData(size, w, h);
+        int[] data = RandomData.getRandomData(size, w, h, 0);
 
         int[][] distanceArray = DistanceArray.getArray(data, w, h);
 
