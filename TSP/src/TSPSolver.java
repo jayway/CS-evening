@@ -12,12 +12,11 @@ public class TSPSolver {
 
         System.out.println(" - Distance array - ");
         for (int i = 0; i < data.length / 2; i++) {
-            System.out.println();
             for (int j = 0; j < data.length / 2; j++) {
                 System.out.print(" " + distanceArray[i][j]);
             }
+            System.out.println();
         }
-        System.out.println();
 
         // Create a valid but very naive solution by
         // setting 0..n to be our path.
