@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class TSPValidator {
+public class TSPTools {
 
     /**
      * Calculate the length of a path.
@@ -23,11 +23,12 @@ public class TSPValidator {
      * @param path the path to get a length for
      * @return the length
      */
-    private static Integer[] convertNodesToIntArray(Node path) {
+    private static Integer[] convertNodesToIntArray(Node node) {
+        Node first = getFirst(node);
         ArrayList<Integer> arrayPath = new ArrayList<Integer>();
-        Node tmp = path.next;
-        arrayPath.add(path.value);
-        while (tmp != path) {
+        Node tmp = first.next;
+        arrayPath.add(first.value);
+        while (tmp != null) {
             arrayPath.add(tmp.value);
             tmp = tmp.next;
         }
@@ -47,6 +48,7 @@ public class TSPValidator {
         for (int i = 1; i < path.length; i++) {
             l += arcs[path[i - 1]][path[i]];
         }
+        l += arcs[path.length - 1][0];
         return l;
     }
 
@@ -56,8 +58,9 @@ public class TSPValidator {
      * @param path the path to check
      * @return the outcome of the check
      */
-    public static boolean isPathValid(Node path) {
-        Integer[] intArray = convertNodesToIntArray(path);
+    public static boolean isPathValid(Node node) {
+        Node first = getFirst(node);
+        Integer[] intArray = convertNodesToIntArray(first);
         return isPathValid(intArray);
     }
 
@@ -80,4 +83,26 @@ public class TSPValidator {
         }
         return true;
     }
+
+    public static Node getFirst(Node node) {
+        while (node.prev != null) {
+            node = node.prev;
+        }
+        return node;
+    }
+
+    /**
+     * Prints the path.
+     */
+    public static void printPath(Node node) {
+        Node first = getFirst(node);
+
+        System.out.print("PATH: ");
+        while (first != null) {
+            System.out.print(first.value + ", ");
+            first = first.next;
+        }
+        System.out.println();
+    }
+
 }

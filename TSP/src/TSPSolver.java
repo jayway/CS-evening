@@ -4,7 +4,7 @@ public class TSPSolver {
 
         int w = 9;
         int h = 9;
-        int size = 3;
+        int size = 4;
 
         int[] data = RandomData.getRandomData(size, w, h, 0);
 
@@ -20,36 +20,32 @@ public class TSPSolver {
 
         // Create a valid but very naive solution by
         // setting 0..n to be our path.
-        Node first = new Node();
-        Node tmp = first;
+        Node next = new Node();
+        Node current = null;
         Node prev = null;
         for (int i = 0; i < size; i++) {
-            tmp.value = i;
-            if (prev != null) {
-                tmp.prev = prev;
-                prev.next = tmp;
-            }
-            prev = tmp;
+            prev = current;
+            current = next;
+            next = new Node();
+
+            current.next = next;
+            current.value = i;
+            current.prev = prev;
+            System.out.println("current " + current.value + ", " + current.prev + ", " + current
+                    + ", " + current.next);
         }
-        first.prev = prev;
+        current.next = null;
 
-        long length = TSPValidator.getPathLength(distanceArray, first);
+        long length = TSPTools.getPathLength(distanceArray, current);
 
-        boolean valid = TSPValidator.isPathValid(first);
+        boolean valid = TSPTools.isPathValid(current);
 
         System.out.println("This TSP path is " + length + " km long and is "
                 + (valid ? "valid" : "invalid"));
 
-        printPath(first);
-    }
+        System.out.println("current" + current + " " + current.prev);
 
-    public static void printPath(Node first) {
-        Node tmp = first;
-        System.out.print("PATH: ");
-        while (tmp != first.prev) {
-            System.out.print(tmp.value + ", ");
-        }
-        System.out.println();
+        TSPTools.printPath(current);
     }
 
 }
