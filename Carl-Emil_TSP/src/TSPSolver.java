@@ -7,6 +7,7 @@ public class TSPSolver {
         int size = 4;
 
         int[] data = RandomData.getRandomData(size, w, h, 0);
+        data = TSPTools.readGraphFromCVSFile("../nodegen/10_locations.csv");
 
         int[][] distanceArray = DistanceArray.getArray(data, w, h);
 
