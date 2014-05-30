@@ -47,7 +47,7 @@ public class TSPTools {
     }
 
     public static void printPath(int[] path) {
-        System.out.println(" --- PATH --- \n");
+        System.out.println(" --- PATH ---");
         for (int i = 0; i < path.length; i++) {
             System.out.print(path[i] + ", ");
         }
