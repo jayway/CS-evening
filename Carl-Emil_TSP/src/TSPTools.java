@@ -8,6 +8,19 @@ import java.util.List;
 public class TSPTools {
 
     /**
+     * 
+     * @param arcs
+     * @param path
+     */
+    public static void checkPath(int[][] arcs, int[] path) {
+        long length = TSPTools.getPathLength(arcs, path);
+        boolean valid = TSPTools.isPathValid(path);
+        System.out.println("This TSP path is " + length + " km long and is "
+                + (valid ? "valid" : "invalid") + ".");
+        TSPTools.printPath(path);
+    }
+
+    /**
      * Calculate the length of a path.
      * 
      * @param arcs matrix containing the arcs of the graph
@@ -17,6 +30,7 @@ public class TSPTools {
     public static long getPathLength(int[][] arcs, int[] path) {
         long l = 0;
         for (int i = 1; i < path.length; i++) {
+            System.out.println(i + "  " + path[i - 1] + "  " + path[i]);
             l += arcs[path[i - 1]][path[i]];
         }
         l += arcs[path.length - 1][0];
@@ -83,11 +97,20 @@ public class TSPTools {
     }
 
     public static void printPath(int[] path) {
-        System.out.println(" --- PATH ---");
+        System.out.print("Path: ");
         for (int i = 0; i < path.length; i++) {
             System.out.print(path[i] + ", ");
         }
         System.out.println();
     }
 
+    public static void printArcs(int size, int[][] distanceArray) {
+        System.out.println(" - Distance array - ");
+        for (int i = 0; i < size / 2; i++) {
+            for (int j = 0; j < size / 2; j++) {
+                System.out.print(" " + distanceArray[i][j]);
+            }
+            System.out.println();
+        }
+    }
 }
