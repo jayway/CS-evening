@@ -1,4 +1,4 @@
-public class DistanceArray {
+public class Arcs {
 
     public static int[][] getArray(int[] data, int w, int h) {
         int[][] array = new int[data.length / 2][data.length / 2];
