@@ -18,34 +18,21 @@ public class TSPSolver {
             System.out.println();
         }
 
-        // Create a valid but very naive solution by
-        // setting 0..n to be our path.
-        Node next = new Node();
-        Node current = null;
-        Node prev = null;
+        int[] path = new int[size];
+
         for (int i = 0; i < size; i++) {
-            prev = current;
-            current = next;
-            next = new Node();
-
-            current.next = next;
-            current.value = i;
-            current.prev = prev;
-            System.out.println("current " + current.value + ", " + current.prev + ", " + current
-                    + ", " + current.next);
+            path[i] = i;
         }
-        current.next = null;
 
-        long length = TSPTools.getPathLength(distanceArray, current);
+        long length = TSPTools.getPathLength(distanceArray, path);
 
-        boolean valid = TSPTools.isPathValid(current);
+        boolean valid = TSPTools.isPathValid(path);
 
         System.out.println("This TSP path is " + length + " km long and is "
                 + (valid ? "valid" : "invalid"));
 
-        System.out.println("current" + current + " " + current.prev);
 
-        TSPTools.printPath(current);
+        TSPTools.printPath(path);
     }
 
 }
