@@ -31,31 +31,31 @@ public class TSPSolver {
 
 	private static long tryRemoveAndInsert(int[][] arcs, int[] path) {
 
-		// for (int n = 1; n < path.length - 1; n++) {
-		// for (int i = 1; i < path.length - 1; i++) {
-		// System.out.println("n: " + n + ", i: " + i);
-		int n = 1, i = 5;
-		int d1 = arcs[n][n - 1] + arcs[n][n + 1] + arcs[i][i + 1];
-		int d2 = arcs[n][i] + arcs[n][i + 1] + arcs[n - 1][n + 1];
-		if (d1 > d2) {
-			if (n < i) {
-				int v = path[n];
-				System.out.println("n " + n + ", i:" + i + ", d1: " + d1 + ", d2: " + d2);
-				for (int j = n; j < i; j++) {
-					path[j] = path[j + 1];
-					TSPTools.printPath(path);
-				}
-				path[i] = v;
-				TSPTools.printPath(path);
-				TSPTools.checkPath(arcs, path);
-				System.out.println("-----------");
-			} else {
+		for (int n = 1; n < path.length - 1; n++) {
+			for (int i = 1; i < path.length - 1; i++) {
+				// System.out.println("n: " + n + ", i: " + i);
+				// int n = 1, i = 5;
+				int d1 = arcs[path[n]][path[n - 1]] + arcs[path[n]][path[n + 1]] + arcs[path[i]][path[i + 1]];
+				int d2 = arcs[path[n]][path[i]] + arcs[path[n]][path[i + 1]] + arcs[path[n - 1]][path[n + 1]];
+				if (d1 > d2) {
+					if (n < i) {
+						int v = path[n];
+						System.out.println("n " + n + ", i:" + i + ", d1: " + d1 + ", d2: " + d2);
+						for (int j = n; j < i; j++) {
+							path[j] = path[j + 1];
+							TSPTools.printPath(path);
+						}
+						path[i] = v;
+						TSPTools.printPath(path);
+						TSPTools.checkPath(arcs, path);
+						System.out.println("-----------");
+					} else {
 
+					}
+					// break;
+				}
 			}
-			// break;
 		}
-		// }
-		// }
 		return TSPTools.getPathLength(arcs, path);
 	}
 
