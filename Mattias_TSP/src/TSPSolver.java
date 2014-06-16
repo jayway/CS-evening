@@ -3,7 +3,7 @@ public class TSPSolver {
     public static void main(String[] args) {
 
         // int[] data = RandomData.getRandomData(size, w, h, 0);
-        int[] data = TSPTools.readGraphFromCVSFile("../nodegen/10_locations.csv");
+        int[] data = TSPTools.readGraphFromCVSFile("../nodegen/1000_locations.csv");
 
         int size = data.length / 2;
 
@@ -28,16 +28,19 @@ public class TSPSolver {
 
         long minPathLength = Long.MAX_VALUE;
         int startNode = -1;
-        for(int a = 0; a < 10;a++){
-            long tempPathLength = TSPTools.getPathLength(arcs, TSPTools.getShortestPathFromOneNode(arcs, 10, a));
+        int nbrOfNodes = 1000;
+        for(int a = 0; a < nbrOfNodes;a++){
+            long tempPathLength = TSPTools.getPathLength(arcs, TSPTools.getShortestPathFromOneNode(arcs, nbrOfNodes, a));
             if(tempPathLength < minPathLength){
                 startNode = a;
                 minPathLength = tempPathLength;
             }
         }
 
-        int[] pathCandidate = TSPTools.getShortestPathFromOneNode(arcs, 10, startNode);
+        int[] pathCandidate = TSPTools.getShortestPathFromOneNode(arcs, nbrOfNodes, startNode);
         TSPTools.checkPath(arcs, pathCandidate);
+
+        System.out.println(PlotterHelper.getWolframAlphaString(data, pathCandidate));
 
         System.out.println("Done!");
 
