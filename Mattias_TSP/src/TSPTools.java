@@ -28,7 +28,6 @@ public class TSPTools {
     public static long getPathLength(int[][] arcs, int[] path) {
         long l = 0;
         for (int i = 1; i < path.length; i++) {
-//            System.out.println(i + "  " + path[i - 1] + "  " + path[i]);
             l += arcs[path[i - 1]][path[i]];
         }
         l += arcs[path[path.length - 1]][path[0]];
@@ -83,7 +82,11 @@ public class TSPTools {
     public static int[] getShortestPathFromOneNode(int[][] arcs, int size, int startNode){
         ArrayList<Integer> tempPath = new ArrayList<Integer>();
         HashSet<Integer> possibleNodes = new HashSet<Integer>();
-        possibleNodes.addAll(Arrays.asList(new Integer[]{0,1,2,3,4,5,6,7,8,9}));
+
+        for(int a=0; a<size;a++){
+            possibleNodes.add(a);
+        }
+
         tempPath.add(startNode);
         possibleNodes.remove(startNode);
 
