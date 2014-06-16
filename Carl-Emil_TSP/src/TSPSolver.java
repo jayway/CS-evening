@@ -30,6 +30,7 @@ public class TSPSolver {
 	}
 
 	private static long tryRemoveAndInsert(int[][] arcs, int[] path) {
+		int l = path.length;
 
 		for (int n = 1; n < path.length - 1; n++) {
 			for (int i = 1; i < path.length - 1; i++) {
@@ -40,17 +41,22 @@ public class TSPSolver {
 				if (d1 > d2) {
 					if (n < i) {
 						int v = path[n];
+						// for (int j = n; j < i; j++) {
+						// path[j] = path[j + 1];
+						// }
+						// path[i] = v;
+					} else {
+						int v = path[n];
 						System.out.println("n " + n + ", i:" + i + ", d1: " + d1 + ", d2: " + d2);
-						for (int j = n; j < i; j++) {
-							path[j] = path[j + 1];
+						TSPTools.printPath(path);
+						for (int j = n; j > i; j--) {
+							path[j] = path[j - 1];
 							TSPTools.printPath(path);
 						}
 						path[i] = v;
 						TSPTools.printPath(path);
 						TSPTools.checkPath(arcs, path);
 						System.out.println("-----------");
-					} else {
-
 					}
 					// break;
 				}
