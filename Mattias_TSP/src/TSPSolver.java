@@ -1,3 +1,5 @@
+import java.io.File;
+
 public class TSPSolver {
 
     public static void main(String[] args) {
@@ -40,7 +42,11 @@ public class TSPSolver {
         int[] pathCandidate = TSPTools.getShortestPathFromOneNode(arcs, nbrOfNodes, startNode);
         TSPTools.checkPath(arcs, pathCandidate);
 
-        System.out.println(PlotterHelper.getWolframAlphaString(data, pathCandidate));
+        try {
+            PlotterHelper.saveStringToFile(PlotterHelper.getCSVString(data, pathCandidate), new File("1000_nodes_result.csv"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         System.out.println("Done!");
 
