@@ -3,11 +3,11 @@ public class TSPSolver {
     public static void main(String[] args) {
 
         // int[] data = RandomData.getRandomData(size, w, h, 0);
-        int[] data = TSPTools.readGraphFromCVSFile("../nodegen/100_locations.csv");
+        int[] data = TSPTools.readGraphFromCVSFile("../nodegen/10_locations.csv");
 
         int size = data.length / 2;
 
-        System.out.println("size= " + size);
+        System.out.println("size: " + size);
 
         int[][] arcs = Arcs.getArray(data, size, size);
 
@@ -18,14 +18,14 @@ public class TSPSolver {
         for (int i = 0; i < size; i++) {
             path[i] = i;
         }
-        long last = 0;
+        long last = Integer.MAX_VALUE - 1;
         long best = Integer.MAX_VALUE;
         while (last < best) {
-            last = tryRemoveAndInsert(arcs, path);
             best = last;
+            // last = tryRemoveAndInsert(arcs, path);
+            last = removeXarcs(path, arcs);
             System.out.println("length: " + last);
         }
-        // removeXarcs(path, arcs);
 
         TSPTools.checkPath(arcs, path);
     }
@@ -62,13 +62,15 @@ public class TSPSolver {
         return TSPTools.getPathLength(arcs, path);
     }
 
-    private static void removeXarcs(int[] path, int[][] arcs) {
+    private static long removeXarcs(int[] path, int[][] arcs) {
+        int l = path.length;
+
         for (int i = 0; i < path.length; i++) {
-            int a = path[i];
-            int b = path[i + 1];
             for (int j = i + 2; j < path.length; j++) {
+                int a = path[i];
+                int b = path[(i + 1) % l];
                 int c = path[j];
-                int d = path[j + 1];
+                int d = path[(j + 1) % l];
                 int a1 = arcs[a][b] + arcs[c][d];
                 int a2 = arcs[a][d] + arcs[b][c];
                 if (a1 > a2) {
@@ -76,6 +78,7 @@ public class TSPSolver {
                 }
             }
         }
+        return TSPTools.getPathLength(arcs, path);
     }
 
 }
