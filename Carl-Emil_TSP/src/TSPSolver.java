@@ -3,7 +3,7 @@ public class TSPSolver {
     public static void main(String[] args) {
 
         // int[] data = RandomData.getRandomData(size, w, h, 0);
-        int[] data = TSPTools.readGraphFromCVSFile("../nodegen/10_locations.csv");
+        int[] data = TSPTools.readGraphFromCVSFile("../nodegen/100_locations.csv");
 
         int size = data.length / 2;
 
@@ -33,14 +33,13 @@ public class TSPSolver {
     private static long tryRemoveAndInsert(int[][] arcs, int[] path) {
         int l = path.length;
 
-        for (int n = 1; n < path.length - 1; n++) {
-            for (int i = 1; i < path.length - 1; i++) {
-                int pna = path[n - 1];
+        for (int n = 0; n < l; n++) {
+            for (int i = 0; i < l; i++) {
+                int pna = path[(n - 1 + l) % l];
                 int pnb = path[n];
-                int pnc = path[n + 1];
-                int pia = path[i - 1];
+                int pnc = path[(n + 1) % l];
                 int pib = path[i];
-                int pic = path[i + 1];
+                int pic = path[(i + 1) % l];
                 int distOrg = arcs[pna][pnb] + arcs[pnb][pnc] + arcs[pib][pic];
                 int distNew = arcs[pnb][pib] + arcs[pnb][pic] + arcs[pna][pnc];
                 if (distOrg > distNew) {
