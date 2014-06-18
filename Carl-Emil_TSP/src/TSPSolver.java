@@ -3,7 +3,7 @@ public class TSPSolver {
     public static void main(String[] args) {
 
         // int[] data = RandomData.getRandomData(size, w, h, 0);
-        int[] data = TSPTools.readGraphFromCVSFile("../nodegen/100_locations.csv");
+        int[] data = TSPTools.readGraphFromCVSFile("../nodegen/10_locations.csv");
 
         int size = data.length / 2;
 
@@ -35,8 +35,6 @@ public class TSPSolver {
 
         for (int n = 1; n < path.length - 1; n++) {
             for (int i = 1; i < path.length - 1; i++) {
-                // System.out.println("n: " + n + ", i: " + i);
-                // int n = 1, i = 5;
                 int pna = path[n - 1];
                 int pnb = path[n];
                 int pnc = path[n + 1];
@@ -48,54 +46,17 @@ public class TSPSolver {
                 if (distOrg > distNew) {
                     if (n < i) {
                         int v = path[n];
-                        System.out.println("n " + n + ", i:" + i + ", distOrg: " + distOrg + ", distNew: " + distNew);
-                        System.out.println("length: " + TSPTools.getPathLength(arcs, path));
-                        TSPTools.printPath(path);
                         for (int j = n; j < i; j++) {
                             path[j] = path[j + 1];
-                            TSPTools.printPath(path);
                         }
                         path[i] = v;
-                        TSPTools.printPath(path);
-                        System.out.println("length: " + TSPTools.getPathLength(arcs, path));
-                        System.out.println("-------------");
                     } else if (n > i) {
                         int v = path[n];
-//                        System.out.println("n " + n + ", i:" + i + ", distOrg: " + distOrg + ", distNew: " + distNew);
-//                        System.out.println("length: " + TSPTools.getPathLength(arcs, path));
-//                        TSPTools.printPath(path);
-//                        for (int j = n; j > i; j--) {
-//                            path[j] = path[j - 1];
-//                            TSPTools.printPath(path);
-//                        }
-//                        path[i] = v;
-//                        TSPTools.printPath(path);
-//                        System.out.println("length: " + TSPTools.getPathLength(arcs, path));
-//                        System.out.println("-------------");
+                        for (int j = n; j > i + 1; j--) {
+                            path[j] = path[j - 1];
+                        }
+                        path[i + 1] = v;
                     }
-//                    if (n < i) {
-//                        n 1, i:5, distOrg: 192, distNew: 95
-//                        length: 493
-//                        Path: 0, 2, 3, 4, 1, 5, 6, 7, 8, 9,
-//                        Path: 0, 3, 3, 4, 1, 5, 6, 7, 8, 9,
-//                        Path: 0, 3, 4, 4, 1, 5, 6, 7, 8, 9,
-//                        Path: 0, 3, 4, 1, 1, 5, 6, 7, 8, 9,
-//                        Path: 0, 3, 4, 1, 5, 5, 6, 7, 8, 9,
-//                        Path: 0, 3, 4, 1, 5, 2, 6, 7, 8, 9,
-//                        length: 396
-//                        -------------
-//                } else if (n > i) {
-//                    n 7, i:2, distOrg: 160, distNew: 130
-//                    length: 492
-//                    Path: 0, 7, 5, 6, 4, 3, 2, 1, 8, 9,
-//                    Path: 0, 7, 5, 6, 4, 3, 2, 2, 8, 9,
-//                    Path: 0, 7, 5, 6, 4, 3, 3, 2, 8, 9,
-//                    Path: 0, 7, 5, 6, 4, 4, 3, 2, 8, 9,
-//                    Path: 0, 7, 5, 6, 6, 4, 3, 2, 8, 9,
-//                    Path: 0, 7, 5, 5, 6, 4, 3, 2, 8, 9,
-//                    Path: 0, 7, 1, 5, 6, 4, 3, 2, 8, 9,
-//                    length: 465
-                    // break;
                 }
             }
         }
