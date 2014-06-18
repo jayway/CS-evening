@@ -7,3 +7,5 @@ CS-evening.iml
 *.project
 
 **/out/*
+
+*/.idea/*
