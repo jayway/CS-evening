@@ -6,6 +6,6 @@ CS-evening.iml
 *.classpath
 *.project
 
-**/out/*
+*/out/
 
-.idea/*
+.idea/
