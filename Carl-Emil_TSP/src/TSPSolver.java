@@ -3,7 +3,7 @@ public class TSPSolver {
     public static void main(String[] args) {
 
         // int[] data = RandomData.getRandomData(size, w, h, 0);
-        int[] data = TSPTools.readGraphFromCVSFile("../nodegen/10_locations.csv");
+        int[] data = TSPTools.readGraphFromCVSFile("../nodegen/1000_locations.csv");
 
         int size = data.length / 2;
 
@@ -14,19 +14,24 @@ public class TSPSolver {
         // TSPTools.printArcs(size, arcs);
 
         int[] path = new int[size];
-        TSPTools.getRandimozedStartPath(path, System.currentTimeMillis());
 
-        long last = Integer.MAX_VALUE - 1;
-        long best = Integer.MAX_VALUE;
-        while (last < best) {
-            best = last;
-            last = tryRemoveAndInsert(arcs, path);
-            long x = removeXarcs(path, arcs);
-            last = last > x ? x : last;
-            System.out.println("length: " + last);
+        long globalBest = Integer.MAX_VALUE;
+        for (int n = 0; n < 10000; n++) {
+            TSPTools.getRandomizedStartPath(path, System.currentTimeMillis());
+
+            long last = Integer.MAX_VALUE - 1;
+            long best = Integer.MAX_VALUE;
+            while (last < best) {
+                best = last;
+                last = tryRemoveAndInsert(arcs, path);
+                long x = removeXarcs(path, arcs);
+                last = last > x ? x : last;
+            }
+            if (globalBest > best) {
+                globalBest = best;
+                TSPTools.checkPath(arcs, path);
+            }
         }
-
-        TSPTools.checkPath(arcs, path);
     }
 
     private static long tryRemoveAndInsert(int[][] arcs, int[] path) {

@@ -74,7 +74,7 @@ public class TSPTools {
         }
     }
 
-    public static void getRandimozedStartPath(int[] path, long seed) {
+    public static void getRandomizedStartPath(int[] path, long seed) {
         Random rnd = new Random(seed);
         List<Integer> list = new ArrayList<Integer>();
         for (int i = 0; i < path.length; i++) {
