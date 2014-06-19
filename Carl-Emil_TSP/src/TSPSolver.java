@@ -1,9 +1,22 @@
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Polygon;
+
+import javax.swing.BorderFactory;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
+
 public class TSPSolver {
+
+    private final static int WINDOW_SIZE = 250;
 
     public static void main(String[] args) {
 
         // int[] data = RandomData.getRandomData(size, w, h, 0);
-        int[] data = TSPTools.readGraphFromCVSFile("../nodegen/1000_locations.csv");
+        final int coordinateSize = 1000;
+        final int[] data = TSPTools.readGraphFromCVSFile("../nodegen/" + coordinateSize + "_locations.csv");
 
         int size = data.length / 2;
 
@@ -14,9 +27,10 @@ public class TSPSolver {
         // TSPTools.printArcs(size, arcs);
 
         int[] path = new int[size];
+        final int[] bestPath = new int[size];
 
         long globalBest = Integer.MAX_VALUE;
-        for (int n = 0; n < 10000; n++) {
+        for (int n = 0; n < 10; n++) {
             TSPTools.getRandomizedStartPath(path, System.currentTimeMillis());
 
             long last = Integer.MAX_VALUE - 1;
@@ -30,8 +44,28 @@ public class TSPSolver {
             if (globalBest > best) {
                 globalBest = best;
                 TSPTools.checkPath(arcs, path);
+                for (int i = 0; i < path.length; i++) {
+                    bestPath[i] = path[i];
+                }
             }
         }
+
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                createAndShowGUI(TSPTools.getPolygonForPlotting(data, bestPath, WINDOW_SIZE, coordinateSize));
+            }
+        });
+
+    }
+
+    private static void createAndShowGUI(Polygon p) {
+        System.out.println("Created GUI on EDT? " + SwingUtilities.isEventDispatchThread());
+        JFrame f = new JFrame("Swing Paint Demo");
+        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        f.setSize(WINDOW_SIZE, WINDOW_SIZE);
+        f.add(new MyPanel(p));
+        f.pack();
+        f.setVisible(true);
     }
 
     private static long tryRemoveAndInsert(int[][] arcs, int[] path) {
@@ -82,6 +116,25 @@ public class TSPSolver {
             }
         }
         return TSPTools.getPathLength(arcs, path);
+    }
+
+    static class MyPanel extends JPanel {
+        Polygon p = null;
+
+        public MyPanel(Polygon p) {
+            setBorder(BorderFactory.createLineBorder(Color.black));
+            this.p = p;
+        }
+
+        public Dimension getPreferredSize() {
+            return new Dimension(WINDOW_SIZE, WINDOW_SIZE);
+        }
+
+        public void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            g.drawPolygon(p);
+            // g.draw
+        }
     }
 
 }
