@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 public class TSPTools {
 
@@ -70,6 +71,19 @@ public class TSPTools {
             int t = path[reverseStart + i];
             path[reverseStart + i] = path[reverseEnd - i];
             path[reverseEnd - i] = t;
+        }
+    }
+
+    public static void getRandimozedStartPath(int[] path, long seed) {
+        Random rnd = new Random(seed);
+        List<Integer> list = new ArrayList<Integer>();
+        for (int i = 0; i < path.length; i++) {
+            list.add(new Integer(i));
+        }
+        int j=0;
+        while(!list.isEmpty()){
+            int ri = rnd.nextInt(list.size());
+            path[j++]=(Integer) list.remove(ri);
         }
     }
 

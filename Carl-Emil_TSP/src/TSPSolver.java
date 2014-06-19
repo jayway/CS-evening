@@ -3,7 +3,7 @@ public class TSPSolver {
     public static void main(String[] args) {
 
         // int[] data = RandomData.getRandomData(size, w, h, 0);
-        int[] data = TSPTools.readGraphFromCVSFile("../nodegen/1000_locations.csv");
+        int[] data = TSPTools.readGraphFromCVSFile("../nodegen/10_locations.csv");
 
         int size = data.length / 2;
 
@@ -14,10 +14,8 @@ public class TSPSolver {
         // TSPTools.printArcs(size, arcs);
 
         int[] path = new int[size];
+        TSPTools.getRandimozedStartPath(path, System.currentTimeMillis());
 
-        for (int i = 0; i < size; i++) {
-            path[i] = i;
-        }
         long last = Integer.MAX_VALUE - 1;
         long best = Integer.MAX_VALUE;
         while (last < best) {
