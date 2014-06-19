@@ -10,12 +10,12 @@ import javax.swing.SwingUtilities;
 
 public class TSPSolver {
 
-    private final static int WINDOW_SIZE = 250;
+    private final static int WINDOW_SIZE = 500;
 
     public static void main(String[] args) {
 
-        // int[] data = RandomData.getRandomData(size, w, h, 0);
         final int coordinateSize = 1000;
+
         final int[] data = TSPTools.readGraphFromCVSFile("../nodegen/" + coordinateSize + "_locations.csv");
 
         int size = data.length / 2;
@@ -23,8 +23,6 @@ public class TSPSolver {
         System.out.println("size: " + size);
 
         int[][] arcs = Arcs.getArray(data, size, size);
-
-        // TSPTools.printArcs(size, arcs);
 
         int[] path = new int[size];
         final int[] bestPath = new int[size];
@@ -59,8 +57,7 @@ public class TSPSolver {
     }
 
     private static void createAndShowGUI(Polygon p) {
-        System.out.println("Created GUI on EDT? " + SwingUtilities.isEventDispatchThread());
-        JFrame f = new JFrame("Swing Paint Demo");
+        JFrame f = new JFrame("TSP viewer");
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         f.setSize(WINDOW_SIZE, WINDOW_SIZE);
         f.add(new MyPanel(p));
@@ -133,7 +130,6 @@ public class TSPSolver {
         public void paintComponent(Graphics g) {
             super.paintComponent(g);
             g.drawPolygon(p);
-            // g.draw
         }
     }
 

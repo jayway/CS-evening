@@ -137,11 +137,9 @@ public class TSPTools {
     public static Polygon getPolygonForPlotting(int[] nodeData, int[] path, int windowSize, int maxCoordinate) {
         Polygon p = new Polygon();
         float scale = (float) windowSize / maxCoordinate;
-        System.out.println("scale" + scale);
         for (int a = 0; a < path.length; a++) {
             p.addPoint((int) (nodeData[2 * path[a]] * scale), (int) (nodeData[2 * path[a] + 1] * scale));
         }
-        System.out.println("p "+p.xpoints[0]);
         return p;
     }
 }
