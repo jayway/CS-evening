@@ -77,42 +77,43 @@ class Worker extends Actor {
   def workMode(matrix: List[List[Int]]): Receive = {
     case BatchWork(nodeBatch, record) => {
       val pathLength = nodeBatch.head.length
-      val attempts = 100
-
       var recordCache = record
       var workPath: Seq[Int] = null
       var bestPath: Seq[Int] = null
-      var continue = 0
-      var pivot = 0
       var length = 0
       var lb = 0
       var lw = 0
+      var p1 = 0
+      var p2 = 1
 
       nodeBatch.foreach { path =>
-        continue = attempts
         bestPath = path
 
-        while (continue >= 0) {
-          pivot = 1 + random.nextInt(pathLength - 1)
-          workPath = bestPath.take(pivot) ++ bestPath.drop(pivot).reverse
+        while (p1 != pathLength) {
+          while (p2 != pathLength) {
+            workPath = bestPath.take(p1).reverse ++ bestPath.slice(p1, p2) ++ bestPath.drop(p2).reverse
 
-          lb = checkLength(bestPath, matrix)
-          lw = checkLength(workPath, matrix)
+            lb = checkLength(bestPath, matrix)
+            lw = checkLength(workPath, matrix)
 
-          length =
-            if (lb <= lw) {
-              continue -= 1
-              lb
-            } else  {
-              bestPath = workPath
-              continue = attempts
-              lw
+            length =
+              if (lb <= lw) {
+                p2 += 1
+                lb
+              } else  {
+                bestPath = workPath
+                p1 = 0
+                p2 = 1
+                lw
+              }
+
+            if (length < recordCache) {
+              recordCache = length
+              context.parent ! Result(length, bestPath.mkString("[", ",", "]"))
             }
-
-          if (length < recordCache) {
-            recordCache = length
-            context.parent ! Result(length, bestPath.mkString("[", ",", "]"))
           }
+
+          p1 += 1
         }
       }
 
