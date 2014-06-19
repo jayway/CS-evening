@@ -1,3 +1,5 @@
+import domain.TspPath;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -14,6 +16,17 @@ public class PlotterHelper {
         }
 
         buf.append(nodeData[2*path[0]] + "," + nodeData[2*path[0]+1]);
+        return buf.toString();
+
+    }
+
+    public static String getCSVString(TspPath tspPath){
+        StringBuilder buf = new StringBuilder("X,Y\n");
+        for(int a=0; a<tspPath.path.size(); a++){
+            buf.append(tspPath.path.get(a).point.getX() + "," + tspPath.path.get(a).point.getY() + "\n");
+        }
+
+        buf.append(tspPath.path.get(0).point.getX() + "," + tspPath.path.get(0).point.getY());
         return buf.toString();
 
     }

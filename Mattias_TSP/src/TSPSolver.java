@@ -1,4 +1,8 @@
+import domain.City;
+import domain.TspPath;
+
 import java.io.File;
+import java.util.List;
 
 public class TSPSolver {
 
@@ -7,43 +11,45 @@ public class TSPSolver {
         // int[] data = RandomData.getRandomData(size, w, h, 0);
         int[] data = TSPTools.readGraphFromCVSFile("../nodegen/1000_locations.csv");
 
-        int size = data.length / 2;
+        List<City> cityList = TSPTools.getCityList(data);
 
-        System.out.println("size= " + size);
+        TspPath tspPath = new TspPath(cityList);
 
-        int[][] arcs = Arcs.getArray(data, size, size);
-
-        TSPTools.printArcs(size, arcs);
-
-        int[] path = new int[size];
-
-        for (int i = 0; i < size; i++) {
-            path[i] = i;
-        }
-
-        TSPTools.checkPath(arcs, path);
-
-//        for(int a = 0; a < 10; a++){
-//            System.out.println("Closest neighbor for " + a + " is " + TSPTools.getClosestNeighborForNode(arcs, a));
-//        }
+        tspPath.printPath();
 
 
         long minPathLength = Long.MAX_VALUE;
         int startNode = -1;
         int nbrOfNodes = 1000;
-        for(int a = 0; a < nbrOfNodes;a++){
-            long tempPathLength = TSPTools.getPathLength(arcs, TSPTools.getShortestPathFromOneNode(arcs, nbrOfNodes, a));
-            if(tempPathLength < minPathLength){
+        for (int a = 0; a < nbrOfNodes; a++) {
+            long tempPathLength = TSPTools.getShortestPathFromOneNode(cityList, a).getPathLength();
+            if (tempPathLength < minPathLength) {
                 startNode = a;
                 minPathLength = tempPathLength;
             }
         }
 
-        int[] pathCandidate = TSPTools.getShortestPathFromOneNode(arcs, nbrOfNodes, startNode);
-        TSPTools.checkPath(arcs, pathCandidate);
+        TspPath pathCandidate = TSPTools.getShortestPathFromOneNode(cityList, startNode);
+        pathCandidate.printPath();
+
+
+        pathCandidate.printIntersections();
+
+        TspPath resolvePath = null;
+        do {
+            if(resolvePath != null){
+                pathCandidate = resolvePath;
+            }
+
+            resolvePath = TSPTools.resolveIntersection(pathCandidate);
+        } while (!resolvePath.equals(pathCandidate));
+
+        pathCandidate.printPath();
+
+        pathCandidate.printIntersections();
 
         try {
-            PlotterHelper.saveStringToFile(PlotterHelper.getCSVString(data, pathCandidate), new File("1000_nodes_result.csv"));
+            PlotterHelper.saveStringToFile(PlotterHelper.getCSVString(pathCandidate), new File("1000_nodes_result.csv"));
         } catch (Exception e) {
             e.printStackTrace();
         }
