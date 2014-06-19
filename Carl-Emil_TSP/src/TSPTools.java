@@ -1,3 +1,4 @@
+import java.awt.Polygon;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -80,10 +81,10 @@ public class TSPTools {
         for (int i = 0; i < path.length; i++) {
             list.add(new Integer(i));
         }
-        int j=0;
-        while(!list.isEmpty()){
+        int j = 0;
+        while (!list.isEmpty()) {
             int ri = rnd.nextInt(list.size());
-            path[j++]=(Integer) list.remove(ri);
+            path[j++] = (Integer) list.remove(ri);
         }
     }
 
@@ -131,5 +132,16 @@ public class TSPTools {
             }
             System.out.println();
         }
+    }
+
+    public static Polygon getPolygonForPlotting(int[] nodeData, int[] path, int windowSize, int maxCoordinate) {
+        Polygon p = new Polygon();
+        float scale = (float) windowSize / maxCoordinate;
+        System.out.println("scale" + scale);
+        for (int a = 0; a < path.length; a++) {
+            p.addPoint((int) (nodeData[2 * path[a]] * scale), (int) (nodeData[2 * path[a] + 1] * scale));
+        }
+        System.out.println("p "+p.xpoints[0]);
+        return p;
     }
 }
