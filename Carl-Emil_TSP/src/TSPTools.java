@@ -20,7 +20,7 @@ public class TSPTools {
 
     /**
      * Calculate the length of a path.
-     * 
+     *
      * @param arcs matrix containing the arcs of the graph
      * @param path the path to get a length for
      * @return the length
@@ -36,7 +36,7 @@ public class TSPTools {
 
     /**
      * Check that the path contains every index exactly once.
-     * 
+     *
      * @param path the path to check
      * @return the outcome of the check
      */
@@ -66,14 +66,10 @@ public class TSPTools {
             reverseStart = t;
         }
         int d2 = (reverseEnd - reverseStart) / 2;
-        // System.out.println("reverseStart, " + reverseStart + " reverseEnd " +
-        // reverseEnd);
         for (int i = 0; i <= d2; i++) {
-            // System.out.println(" " + (reverseStart + i) + "  " + (reverseEnd
-            // - i));
             int t = path[reverseStart + i];
-            path[reverseStart + i] = path[reverseEnd - 1];
-            path[reverseEnd - 1] = t;
+            path[reverseStart + i] = path[reverseEnd - i];
+            path[reverseEnd - i] = t;
         }
     }
 
