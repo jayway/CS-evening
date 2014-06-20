@@ -1,9 +1,12 @@
 import java.awt.Polygon;
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
@@ -141,5 +144,31 @@ public class TSPTools {
             p.addPoint((int) (nodeData[2 * path[a]] * scale), (int) (nodeData[2 * path[a] + 1] * scale));
         }
         return p;
+    }
+
+    public static void savePathToFile(int[] path, long rndSeed, String string) {
+        Date date = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy h:mm:ss a");
+        StringBuffer data = new StringBuffer();
+        data.append("Time: ");
+        data.append(sdf.format(date));
+        data.append("\n");
+        data.append("Seed: ");
+        data.append(rndSeed);
+        data.append("\n");
+        for (int i = 0; i < path.length; i++) {
+            data.append(path[i]).append(", ");
+        }
+        data.append("\n");
+        FileWriter writer;
+        try {
+            writer = new FileWriter(string);
+            writer.write(data.toString());
+            writer.flush();
+            writer.close();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 }

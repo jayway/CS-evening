@@ -11,6 +11,7 @@ import javax.swing.SwingUtilities;
 public class TSPSolver {
 
     private final static int WINDOW_SIZE = 500;
+    private static long rndSeed;
 
     public static void main(String[] args) {
 
@@ -29,7 +30,8 @@ public class TSPSolver {
 
         long globalBest = Integer.MAX_VALUE;
         for (int n = 0; n < 10; n++) {
-            TSPTools.getRandomizedStartPath(path, System.currentTimeMillis());
+            rndSeed = System.currentTimeMillis();
+            TSPTools.getRandomizedStartPath(path, rndSeed);
 
             long last = Integer.MAX_VALUE - 1;
             long best = Integer.MAX_VALUE;
@@ -45,6 +47,9 @@ public class TSPSolver {
                 for (int i = 0; i < path.length; i++) {
                     bestPath[i] = path[i];
                 }
+                TSPTools.savePathToFile(bestPath, rndSeed,
+                        "result_" + size + "_" + TSPTools.getPathLength(arcs, bestPath) + ".csv");
+
             }
         }
 
