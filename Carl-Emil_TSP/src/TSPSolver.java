@@ -44,9 +44,9 @@ public class TSPSolver {
                 for (int i = 0; i < path.length; i++) {
                     bestPath[i] = path[i];
                 }
+
                 TSPTools.savePathToFile(bestPath, rndSeed,
                         "result_" + size + "_" + TSPTools.getPathLength(arcs, bestPath) + ".csv");
-
             }
         }
 

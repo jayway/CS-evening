@@ -18,6 +18,7 @@ public class TSPSolver {
         final int[] data = TSPTools.readGraphFromCVSFile("../nodegen/10_locations.csv");
         final int coordinateSize = TSPTools.getMaxCoordSize(data);
 
+
         int size = data.length / 2;
 
         int[][] arcs = Arcs.getArray(data, size, size);
@@ -38,6 +39,7 @@ public class TSPSolver {
 
         TSPTools.savePathToFile(path, rndSeed,
                 "result_" + size + "_" + TSPTools.getPathLength(arcs, path) + ".csv");
+
 
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
