@@ -15,13 +15,10 @@ public class TSPSolver {
 
     public static void main(String[] args) {
 
-        final int coordinateSize = 1000;
-
-        final int[] data = TSPTools.readGraphFromCVSFile("../nodegen/" + coordinateSize + "_locations.csv");
+        final int[] data = TSPTools.readGraphFromCVSFile("../nodegen/10_locations.csv");
+        final int coordinateSize = TSPTools.getMaxCoordSize(data);
 
         int size = data.length / 2;
-
-        System.out.println("size: " + size);
 
         int[][] arcs = Arcs.getArray(data, size, size);
 

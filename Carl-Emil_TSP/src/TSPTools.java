@@ -119,6 +119,14 @@ public class TSPTools {
         return results;
     }
 
+    public static int getMaxCoordSize(int[] data) {
+        int max = 0;
+        for (int s : data) {
+            max = Math.max(max, s);
+        }
+        return max;
+    }
+
     public static void printPath(int[] path) {
         System.out.print("Path: ");
         for (int i = 0; i < path.length; i++) {

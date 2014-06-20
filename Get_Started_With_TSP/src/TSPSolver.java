@@ -11,12 +11,12 @@ import javax.swing.SwingUtilities;
 public class TSPSolver {
 
     private final static int WINDOW_SIZE = 500;
+    private static long rndSeed;
 
     public static void main(String[] args) {
 
-        final int coordinateSize = 100;
-
-        final int[] data = TSPTools.readGraphFromCVSFile("../nodegen/" + coordinateSize + "_locations.csv");
+        final int[] data = TSPTools.readGraphFromCVSFile("../nodegen/10_locations.csv");
+        final int coordinateSize = TSPTools.getMaxCoordSize(data);
 
         int size = data.length / 2;
 
@@ -24,17 +24,20 @@ public class TSPSolver {
 
         final int[] path = new int[size];
 
-        TSPTools.getRandomizedStartPath(path, System.currentTimeMillis());
+        rndSeed = System.currentTimeMillis();
+        TSPTools.getRandomizedStartPath(path, rndSeed);
 
-            long last = Integer.MAX_VALUE - 1;
-            long best = Integer.MAX_VALUE;
-            while (last < best) {
-                best = last;
+        long last = Integer.MAX_VALUE - 1;
+        long best = Integer.MAX_VALUE;
+        while (last < best) {
+            best = last;
             // TODO improve the path !!!
-
-            }
+        }
 
         TSPTools.checkPath(arcs, path);
+
+        TSPTools.savePathToFile(path, rndSeed,
+                "result_" + size + "_" + TSPTools.getPathLength(arcs, path) + ".csv");
 
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
