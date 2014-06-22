@@ -1,3 +1,6 @@
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.Polygon;
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -9,6 +12,10 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
+
+import javax.swing.BorderFactory;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 public class TSPTools {
 
@@ -177,19 +184,40 @@ public class TSPTools {
     }
 
     /**
+     * Show a polygon in a window.
+     * 
+     * @param p the polygon to display
+     * @param windowSize the size of the window
+     */
+    public static void createAndShowGUI(Polygon p, int windowSize) {
+        JFrame f = new JFrame("TSP path viewer");
+        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        f.setSize(windowSize, windowSize);
+        f.add(new MyPanel(p, windowSize));
+        f.pack();
+        f.setVisible(true);
+    }
+
+    /**
      * Build a polygon for plotting the path on the screen
      * 
      * @param nodeData x,y,x,y... data of the graph
      * @param path the path to plot
      * @param windowSize size of the window to plot in
-     * @param maxCoordinate max x or y coordinate
      * @return the polygon to plot.
      */
-    public static Polygon getPolygonForPlotting(int[] nodeData, int[] path, int windowSize, int maxCoordinate) {
+    public static Polygon getPolygonForPlotting(int[] nodeData, int[] path, int windowSize) {
         Polygon p = new Polygon();
-        float scale = (float) windowSize / maxCoordinate;
+        float maxCoordinate = 0;
+        for (int coodr : nodeData) {
+            maxCoordinate = Math.max(maxCoordinate, coodr);
+        }
+
+        int padding = 50;
+        float scale = (float) (windowSize - padding) / maxCoordinate;
         for (int a = 0; a < path.length; a++) {
-            p.addPoint((int) (nodeData[2 * path[a]] * scale), (int) (nodeData[2 * path[a] + 1] * scale));
+            p.addPoint((int) (nodeData[2 * path[a]] * scale) + padding / 2, //
+                    (int) (nodeData[2 * path[a] + 1] * scale) + padding / 2);
         }
         return p;
     }
@@ -225,6 +253,26 @@ public class TSPTools {
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
+        }
+    }
+
+    private static class MyPanel extends JPanel {
+        private Polygon p = null;
+        private int windowSize = 100;
+
+        public MyPanel(Polygon p, int windowSize) {
+            setBorder(BorderFactory.createLineBorder(Color.black));
+            this.p = p;
+            this.windowSize = windowSize;
+        }
+
+        public Dimension getPreferredSize() {
+            return new Dimension(windowSize, windowSize);
+        }
+
+        public void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            g.drawPolygon(p);
         }
     }
 }

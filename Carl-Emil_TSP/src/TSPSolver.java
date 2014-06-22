@@ -1,11 +1,3 @@
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Polygon;
-
-import javax.swing.BorderFactory;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 public class TSPSolver {
@@ -15,7 +7,7 @@ public class TSPSolver {
 
     public static void main(String[] args) {
 
-        final int[] data = TSPTools.readGraphFromCVSFile("../nodegen/100_locations.csv");
+        final int[] data = TSPTools.readGraphFromCVSFile("../nodegen/1000_locations.csv");
         final int coordinateSize = TSPTools.getMaxCoordSize(data);
 
         int size = data.length / 2;
@@ -26,7 +18,7 @@ public class TSPSolver {
         final int[] bestPath = new int[size];
 
         double globalBest = Integer.MAX_VALUE;
-        for (int n = 0; n < 10000000; n++) {
+        for (int n = 0; n < 1; n++) {
             rndSeed = System.currentTimeMillis();
             TSPTools.getRandomizedStartPath(path, rndSeed);
 
@@ -52,19 +44,10 @@ public class TSPSolver {
 
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-                createAndShowGUI(TSPTools.getPolygonForPlotting(data, bestPath, WINDOW_SIZE, coordinateSize));
+                TSPTools.createAndShowGUI(TSPTools.getPolygonForPlotting(data, bestPath, WINDOW_SIZE), WINDOW_SIZE);
             }
         });
 
-    }
-
-    private static void createAndShowGUI(Polygon p) {
-        JFrame f = new JFrame("TSP viewer");
-        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        f.setSize(WINDOW_SIZE, WINDOW_SIZE);
-        f.add(new MyPanel(p));
-        f.pack();
-        f.setVisible(true);
     }
 
     private static double tryRemoveAndInsert(double[][] arcs, int[] path) {
@@ -116,23 +99,4 @@ public class TSPSolver {
         }
         return TSPTools.getPathLength(arcs, path);
     }
-
-    static class MyPanel extends JPanel {
-        Polygon p = null;
-
-        public MyPanel(Polygon p) {
-            setBorder(BorderFactory.createLineBorder(Color.black));
-            this.p = p;
-        }
-
-        public Dimension getPreferredSize() {
-            return new Dimension(WINDOW_SIZE, WINDOW_SIZE);
-        }
-
-        public void paintComponent(Graphics g) {
-            super.paintComponent(g);
-            g.drawPolygon(p);
-        }
-    }
-
 }
