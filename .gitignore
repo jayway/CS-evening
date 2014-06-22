@@ -5,3 +5,11 @@ CS-evening.iml
 .classpath
 *.classpath
 *.project
+
+Get_Started_With_TSP/Get_Started_With_TSP.iml
+
+Get_Started_With_TSP/result_100_804.2745689802791.csv
+
+Get_Started_With_TSP/result_100_974.8283670653798.csv
+
+Get_Started_With_TSP/src/TSPSolver.java
