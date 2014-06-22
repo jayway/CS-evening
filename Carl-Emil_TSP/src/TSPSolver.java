@@ -15,27 +15,27 @@ public class TSPSolver {
 
     public static void main(String[] args) {
 
-        final int[] data = TSPTools.readGraphFromCVSFile("../nodegen/10_locations.csv");
+        final int[] data = TSPTools.readGraphFromCVSFile("../nodegen/100_locations.csv");
         final int coordinateSize = TSPTools.getMaxCoordSize(data);
 
         int size = data.length / 2;
 
-        int[][] arcs = Arcs.getArray(data, size, size);
+        double[][] arcs = Arcs.getArray(data, size, size);
 
         int[] path = new int[size];
         final int[] bestPath = new int[size];
 
-        long globalBest = Integer.MAX_VALUE;
-        for (int n = 0; n < 10; n++) {
+        double globalBest = Integer.MAX_VALUE;
+        for (int n = 0; n < 10000000; n++) {
             rndSeed = System.currentTimeMillis();
             TSPTools.getRandomizedStartPath(path, rndSeed);
 
-            long last = Integer.MAX_VALUE - 1;
-            long best = Integer.MAX_VALUE;
+            double last = Integer.MAX_VALUE - 1;
+            double best = Integer.MAX_VALUE;
             while (last < best) {
                 best = last;
                 last = tryRemoveAndInsert(arcs, path);
-                long x = removeXarcs(path, arcs);
+                double x = removeXarcs(path, arcs);
                 last = last > x ? x : last;
             }
             if (globalBest > best) {
@@ -67,7 +67,7 @@ public class TSPSolver {
         f.setVisible(true);
     }
 
-    private static long tryRemoveAndInsert(int[][] arcs, int[] path) {
+    private static double tryRemoveAndInsert(double[][] arcs, int[] path) {
         int l = path.length;
 
         for (int n = 0; n < l; n++) {
@@ -77,8 +77,8 @@ public class TSPSolver {
                 int pnc = path[(n + 1) % l];
                 int pib = path[i];
                 int pic = path[(i + 1) % l];
-                int distOrg = arcs[pna][pnb] + arcs[pnb][pnc] + arcs[pib][pic];
-                int distNew = arcs[pnb][pib] + arcs[pnb][pic] + arcs[pna][pnc];
+                double distOrg = arcs[pna][pnb] + arcs[pnb][pnc] + arcs[pib][pic];
+                double distNew = arcs[pnb][pib] + arcs[pnb][pic] + arcs[pna][pnc];
                 if (distOrg > distNew) {
                     if (n < i) {
                         int v = path[n];
@@ -99,7 +99,7 @@ public class TSPSolver {
         return TSPTools.getPathLength(arcs, path);
     }
 
-    private static long removeXarcs(int[] path, int[][] arcs) {
+    private static double removeXarcs(int[] path, double[][] arcs) {
         int l = path.length;
         for (int i = 0; i < l; i++) {
             for (int j = i + 2; j < l; j++) {
@@ -107,8 +107,8 @@ public class TSPSolver {
                 int d = (i + 1) % l;
                 int b = j;
                 int c = (j + 1) % l;
-                int a1 = arcs[path[a]][path[d]] + arcs[path[b]][path[c]];
-                int a2 = arcs[path[a]][path[b]] + arcs[path[d]][path[c]];
+                double a1 = arcs[path[a]][path[d]] + arcs[path[b]][path[c]];
+                double a2 = arcs[path[a]][path[b]] + arcs[path[d]][path[c]];
                 if (a1 > a2) {
                     TSPTools.reversSubSectionOfArray(path, d, b);
                 }

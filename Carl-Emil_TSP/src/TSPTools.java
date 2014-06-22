@@ -16,8 +16,8 @@ public class TSPTools {
      * @param arcs
      * @param path
      */
-    public static void checkPath(int[][] arcs, int[] path) {
-        long length = TSPTools.getPathLength(arcs, path);
+    public static void checkPath(double[][] arcs, int[] path) {
+        double length = TSPTools.getPathLength(arcs, path);
         boolean valid = TSPTools.isPathValid(path);
         System.out.println("This TSP path is " + length + " km long and is " + (valid ? "valid" : "invalid") + ".");
         TSPTools.printPath(path);
@@ -30,8 +30,8 @@ public class TSPTools {
      * @param path the path to get a length for
      * @return the length
      */
-    public static long getPathLength(int[][] arcs, int[] path) {
-        long l = 0;
+    public static double getPathLength(double[][] arcs, int[] path) {
+        double l = 0;
         for (int i = 1; i < path.length; i++) {
             l += arcs[path[i - 1]][path[i]];
         }
