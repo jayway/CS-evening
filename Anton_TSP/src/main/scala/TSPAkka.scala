@@ -28,7 +28,6 @@ class Supervisor extends Actor {
   var record = Double.MaxValue
   val batchSize = 10
   val cores = Runtime.getRuntime.availableProcessors()
-//  var bruteForcePermutations = (0 until nodes.length).permutations.toStream
 
   (0 until cores) foreach {
     index => context.actorOf(Props[Worker], s"worker-$index") ! LoadMatrix(matrix)
@@ -39,17 +38,9 @@ class Supervisor extends Actor {
       sender ! LoadMatrix(matrix)
     }
 
-//    case NewBruteForceBatch => {
-//      val batch = bruteForcePermutations.take(batchSize).toList
-//      if (batch.length > 0) sender ! BatchWork(batch, record)
-//      else println(s"${self.path.name}: No more batches to distribute to ${sender().path.name}.")
-//      bruteForcePermutations = bruteForcePermutations.drop(batchSize)
-//    }
-
     case NewRandomBatch => {
       val nodeList = (0 until length).toList
-      val hack = "88,66,42,3,77,33,17,24,63,7,39,81,92,59,60,1,95,79,44,14,2,48,29,54,85,8,80,40,99,96,11,52,46,57,75,93,26,35,41,20,12,31,76,65,55,43,51,27,83,6,49,15,38,34,91,74,94,89,9,64,45,25,22,19,53,18,5,32,82,13,90,16,84,58,37,0,10,98,21,61,68,47,87,62,30,36,50,97,70,67,28,72,4,78,73,69,23,56,86,71".split(",").map(_.toInt).toSeq
-      val batch = List(hack)// ++ List.fill(batchSize)(Random.shuffle(nodeList))
+      val batch = List.fill(batchSize)(Random.shuffle(nodeList))
       sender ! BatchWork(batch, record)
     }
 
