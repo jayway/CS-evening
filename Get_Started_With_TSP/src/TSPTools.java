@@ -16,8 +16,8 @@ public class TSPTools {
      * @param arcs
      * @param path
      */
-    public static void checkPath(int[][] arcs, int[] path) {
-        long length = TSPTools.getPathLength(arcs, path);
+    public static void checkPath(double[][] arcs, int[] path) {
+        double length = TSPTools.getPathLength(arcs, path);
         boolean valid = TSPTools.isPathValid(path);
         System.out.println("This TSP path is " + length + " km long and is " + (valid ? "valid" : "invalid") + ".");
         TSPTools.printPath(path);
@@ -25,17 +25,12 @@ public class TSPTools {
 
     /**
      * Calculate the length of a path.
-<<<<<<< HEAD
-     * 
-=======
-     *
->>>>>>> 639c29bc8f8ca1867aa0173aa74df53fc519f352
      * @param arcs matrix containing the arcs of the graph
      * @param path the path to get a length for
      * @return the length
      */
-    public static long getPathLength(int[][] arcs, int[] path) {
-        long l = 0;
+    public static double getPathLength(double[][] arcs, int[] path) {
+        double l = 0;
         for (int i = 1; i < path.length; i++) {
             l += arcs[path[i - 1]][path[i]];
         }
@@ -45,11 +40,6 @@ public class TSPTools {
 
     /**
      * Check that the path contains every index exactly once.
-<<<<<<< HEAD
-     * 
-=======
-     *
->>>>>>> 639c29bc8f8ca1867aa0173aa74df53fc519f352
      * @param path the path to check
      * @return the outcome of the check
      */

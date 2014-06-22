@@ -21,15 +21,15 @@ public class TSPSolver {
 
         int size = data.length / 2;
 
-        int[][] arcs = Arcs.getArray(data, size, size);
+        double[][] arcs = Arcs.getArray(data, size, size);
 
         final int[] path = new int[size];
 
         rndSeed = System.currentTimeMillis();
         TSPTools.getRandomizedStartPath(path, rndSeed);
 
-        long last = Integer.MAX_VALUE - 1;
-        long best = Integer.MAX_VALUE;
+        double last = Double.MAX_VALUE - 1;
+        double best = Double.MAX_VALUE;
         while (last < best) {
             best = last;
             // TODO improve the path !!!
