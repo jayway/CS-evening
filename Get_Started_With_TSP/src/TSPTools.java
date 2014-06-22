@@ -13,8 +13,11 @@ import java.util.Random;
 public class TSPTools {
 
     /**
-     * @param arcs
-     * @param path
+     * Checks that the path is valid (contains every node exactly once), and
+     * also prints the length of the path.
+     * 
+     * @param arcs matrix containing the arcs of the graph
+     * @param path the path to get a length for
      */
     public static void checkPath(double[][] arcs, int[] path) {
         double length = TSPTools.getPathLength(arcs, path);
@@ -25,9 +28,10 @@ public class TSPTools {
 
     /**
      * Calculate the length of a path.
+     * 
      * @param arcs matrix containing the arcs of the graph
      * @param path the path to get a length for
-     * @return the length
+     * @return the length of the path
      */
     public static double getPathLength(double[][] arcs, int[] path) {
         double l = 0;
@@ -39,7 +43,8 @@ public class TSPTools {
     }
 
     /**
-     * Check that the path contains every index exactly once.
+     * Check that the path contains every node exactly once.
+     * 
      * @param path the path to check
      * @return the outcome of the check
      */
@@ -58,9 +63,11 @@ public class TSPTools {
     }
 
     /**
-     * @param path
-     * @param reverseStart
-     * @param reverseEnd
+     * Reverses a subsection of a path.
+     * 
+     * @param path the path to reverse a subsection of
+     * @param reverseStart the first node of the subsection
+     * @param reverseEnd the last node of the subsection
      */
     public static void reversSubSectionOfArray(int[] path, int reverseStart, int reverseEnd) {
         if (reverseEnd < reverseStart) {
@@ -76,6 +83,13 @@ public class TSPTools {
         }
     }
 
+    /**
+     * Fill in the path with a randomized valid set of nodes.
+     * 
+     * @param path this is where the result is returned.
+     * @param seed the seed used to create the path, reusing the same seed
+     *        results in the same path.
+     */
     public static void getRandomizedStartPath(int[] path, long seed) {
         Random rnd = new Random(seed);
         List<Integer> list = new ArrayList<Integer>();
@@ -90,9 +104,11 @@ public class TSPTools {
     }
 
     /**
-     * @param path
-     * @return
-     * @throws IOException
+     * Read a graph from a comma separated file, file should be on x,y,x,y...
+     * format
+     * 
+     * @param file the file containing the graph
+     * @return the nodes x and y values of the graph
      */
     public static int[] readGraphFromCVSFile(String file) {
         BufferedReader br = null;
@@ -117,6 +133,13 @@ public class TSPTools {
         return results;
     }
 
+    /**
+     * Looks for the maximum coordinate on both x and y axis, returns the max
+     * value found.
+     * 
+     * @param data the x,y values for al the nodes in the graph
+     * @return integer for the largest x or y value found
+     */
     public static int getMaxCoordSize(int[] data) {
         int max = 0;
         for (int s : data) {
@@ -125,6 +148,11 @@ public class TSPTools {
         return max;
     }
 
+    /**
+     * Prints the path
+     * 
+     * @param path the path to print
+     */
     public static void printPath(int[] path) {
         System.out.print("Path: ");
         for (int i = 0; i < path.length; i++) {
@@ -133,16 +161,30 @@ public class TSPTools {
         System.out.println();
     }
 
-    public static void printArcs(int size, int[][] distanceArray) {
+    /**
+     * Prints the arcs of the graph
+     * 
+     * @param distanceArray
+     */
+    public static void printArcs(int[][] distanceArray) {
         System.out.println(" - Distance array - ");
-        for (int i = 0; i < size; i++) {
-            for (int j = 0; j < size; j++) {
+        for (int i = 0; i < distanceArray.length; i++) {
+            for (int j = 0; j < distanceArray[0].length; j++) {
                 System.out.print(" " + distanceArray[i][j]);
             }
             System.out.println();
         }
     }
 
+    /**
+     * Build a polygon for plotting the path on the screen
+     * 
+     * @param nodeData x,y,x,y... data of the graph
+     * @param path the path to plot
+     * @param windowSize size of the window to plot in
+     * @param maxCoordinate max x or y coordinate
+     * @return the polygon to plot.
+     */
     public static Polygon getPolygonForPlotting(int[] nodeData, int[] path, int windowSize, int maxCoordinate) {
         Polygon p = new Polygon();
         float scale = (float) windowSize / maxCoordinate;
@@ -152,6 +194,14 @@ public class TSPTools {
         return p;
     }
 
+    /**
+     * 
+     * Write the path to file
+     * 
+     * @param path the path to write to file
+     * @param rndSeed the seed used to create the path
+     * @param string file name
+     */
     public static void savePathToFile(int[] path, long rndSeed, String string) {
         Date date = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy h:mm:ss a");
