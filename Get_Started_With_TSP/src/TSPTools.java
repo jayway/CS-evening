@@ -272,7 +272,19 @@ public class TSPTools {
 
         public void paintComponent(Graphics g) {
             super.paintComponent(g);
+
+            // Draw the path/polygon
             g.drawPolygon(p);
+
+            int width = 3;
+            int height = 3;
+            // Draw the points with small squares
+            for (int i = 0; i < p.npoints; i++) {
+                g.drawRect(p.xpoints[i] - width / 2, p.ypoints[i] - height / 2, width, height);
+            }
+
+            // Draw first/last point in path larger
+            g.drawRect(p.xpoints[0] - width * 2, p.ypoints[0] - height * 2, width * 4, height * 4);
         }
     }
 }

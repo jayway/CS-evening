@@ -2,7 +2,7 @@ import javax.swing.SwingUtilities;
 
 public class TSPSolver {
 
-    private final static int WINDOW_SIZE = 500;
+    private final static int WINDOW_SIZE = 900;
     private static long rndSeed;
 
     public static void main(String[] args) {
