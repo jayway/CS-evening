@@ -1,11 +1,11 @@
 import akka.actor._
 import scala.util.Random
 
-case class BatchWork(nodeBatch: List[Seq[Int]], record: Long)
+case class BatchWork(nodeBatch: Seq[Seq[Int]], record: Double)
 
-case class LoadMatrix(matrix: List[List[Int]])
+case class LoadMatrix(matrix: Seq[Seq[Double]])
 
-case class Result(length: Long, path: String)
+case class Result(length: Double, path: String)
 
 case object NewBruteForceBatch
 
@@ -14,9 +14,9 @@ case object NewRandomBatch
 case object Ready
 
 class Supervisor extends Actor {
-  def distanceMatrix(nodes: Seq[(Int, Int)]): Array[Array[Int]] = {
+  def distanceMatrix(nodes: Seq[(Int, Int)]): Array[Array[Double]] = {
     Array.tabulate(nodes.length, nodes.length) {
-      (x, y) => Math.sqrt(Math.pow(nodes(x)._1 - nodes(y)._1, 2) + Math.pow(nodes(x)._2 - nodes(y)._2, 2)).toInt
+      (x, y) => Math.sqrt(Math.pow(nodes(x)._1 - nodes(y)._1, 2) + Math.pow(nodes(x)._2 - nodes(y)._2, 2))
     }
   }
 
@@ -25,7 +25,7 @@ class Supervisor extends Actor {
   val nodes = input.split(",").map(_.toInt).grouped(2).map(a => a(0) -> a(1)).toSeq
   val length = nodes.length
   val matrix = distanceMatrix(nodes).map(_.toList).toList
-  var record = Long.MaxValue
+  var record = Double.MaxValue
   val batchSize = 1000
   val cores = Runtime.getRuntime.availableProcessors()
 //  var bruteForcePermutations = (0 until nodes.length).permutations.toStream
@@ -48,7 +48,6 @@ class Supervisor extends Actor {
 
     case NewRandomBatch => {
       val nodeList = (0 until length).toList
-//      val hackList = "88,66,42,3,77,33,17,24,63,7,39,81,92,59,60,1,95,79,44,14,2,48,29,54,85,8,80,40,99,96,11,52,46,57,75,93,26,35,41,20,12,31,76,65,55,43,51,27,83,6,49,15,38,34,91,74,94,89,9,64,45,25,22,19,53,18,5,32,82,13,90,16,84,58,37,0,10,98,21,61,68,47,87,62,30,36,50,97,70,67,28,72,4,78,73,69,23,56,86,71".split(",").map(_.trim.toInt).toList
       val batch = List.fill(batchSize)(Random.shuffle(nodeList))
       sender ! BatchWork(batch, record)
     }
@@ -69,13 +68,13 @@ class Worker extends Actor {
     context.parent ! Ready
   }
 
-  def checkLength(path: Seq[Int], distance: List[List[Int]]): Int = {
+  def checkLength(path: Seq[Int], distance: Seq[Seq[Double]]): Double = {
     path.sliding(2, 1).toArray.map {
       item => distance(item(0))(item(1))
     }.sum + distance(path.head)(path.last)
   }
 
-  def workMode(matrix: List[List[Int]]): Receive = {
+  def workMode(matrix: Seq[Seq[Double]]): Receive = {
     case BatchWork(nodeBatch, record) => {
       val nodesSize = nodeBatch.head.length
       var recordCache = record
@@ -98,10 +97,10 @@ class Worker extends Actor {
             val workPath = p.take(i).reverse ++ p.slice(i, j) ++ p.drop(j).reverse
             val lw = checkLength(workPath, matrix)
 
-            if (lw <= length) {
+            if (lw.toInt <= length.toInt) {
               batch = List(workPath) ++ batch
 
-              if (lw < recordCache) {
+              if (lw.toInt < recordCache.toInt) {
                 recordCache = lw
                 context.parent ! Result(lw, workPath.mkString("[", ",", "]"))
               }
