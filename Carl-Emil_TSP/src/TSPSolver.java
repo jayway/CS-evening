@@ -3,21 +3,22 @@ import javax.swing.SwingUtilities;
 public class TSPSolver {
 
     private final static int WINDOW_SIZE = 900;
+
     private static long rndSeed;
 
     public static void main(String[] args) {
 
         final int[] data = TSPTools.readGraphFromCVSFile("../nodegen/1000_locations.csv");
 
-        int size = data.length / 2;
+        final int size = data.length / 2;
 
-        double[][] arcs = Arcs.getArray(data, size, size);
+        final double[][] arcs = Arcs.getArray(data, size, size);
 
         int[] path = new int[size];
         final int[] bestPath = new int[size];
 
         double globalBest = Integer.MAX_VALUE;
-        for (int n = 0; n < 10000000; n++) {
+        for (int n = 0; n < 1; n++) {
             rndSeed = System.currentTimeMillis();
             TSPTools.getRandomizedStartPath(path, rndSeed);
 
@@ -36,19 +37,15 @@ public class TSPSolver {
                     bestPath[i] = path[i];
                 }
 
-                if(globalBest<24700){
-                TSPTools.savePathToFile(bestPath, rndSeed,
-                        "result_" + size + "_" + TSPTools.getPathLength(arcs, bestPath) + ".csv");
-                    SwingUtilities.invokeLater(new Runnable() {
-                        public void run() {
-                            TSPTools.createAndShowGUI(TSPTools.getPolygonForPlotting(data, bestPath, WINDOW_SIZE), WINDOW_SIZE);
-                        }
-                    });
-                }
+                TSPTools.savePathToFile(bestPath, rndSeed, size + "_" + TSPTools.getPathLength(arcs, bestPath) + ".csv");
             }
         }
-
-
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                TSPTools.createAndShowGUI(TSPTools.getPolygonForPlotting(data, bestPath, WINDOW_SIZE), WINDOW_SIZE,
+                        "TSP path, nodes: " + size + ", length: " + TSPTools.getPathLength(arcs, bestPath));
+            }
+        });
     }
 
     private static double tryRemoveAndInsert(double[][] arcs, int[] path) {
