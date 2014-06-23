@@ -1,4 +1,4 @@
-Jayway internal TSP summer 2014 competition
+Jayways TSP challenge
 ==========
 
 The goal is simple, claim the shortest path on as many of the graphs as possible. The graphs can be found in this repo in the /nodegen folder, and are named xxx_locations.csv where the xxx stands for how many nodes the graph contains.
