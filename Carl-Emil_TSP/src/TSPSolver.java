@@ -8,7 +8,7 @@ public class TSPSolver {
 
     public static void main(String[] args) {
 
-        final int[] data = TSPTools.readGraphFromCVSFile("../nodegen/1000_locations.csv");
+        final int[] data = TSPTools.readGraphFromCVSFile("../nodegen/3000_locations.csv");
 
         final int size = data.length / 2;
 
@@ -37,7 +37,8 @@ public class TSPSolver {
                     bestPath[i] = path[i];
                 }
 
-                TSPTools.savePathToFile(bestPath, rndSeed, size + "_" + TSPTools.getPathLength(arcs, bestPath) + ".csv");
+                TSPTools.savePathToFile(bestPath, rndSeed,
+                        "result_" + size + "_" + TSPTools.getPathLength(arcs, bestPath) + ".csv");
             }
         }
         SwingUtilities.invokeLater(new Runnable() {
