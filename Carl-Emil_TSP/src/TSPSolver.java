@@ -3,6 +3,7 @@ import javax.swing.SwingUtilities;
 public class TSPSolver {
 
     private final static int WINDOW_SIZE = 900;
+
     private static long rndSeed;
 
     public static void main(String[] args) {
@@ -36,18 +37,15 @@ public class TSPSolver {
                     bestPath[i] = path[i];
                 }
 
-                TSPTools.savePathToFile(bestPath, rndSeed,
-                        "result_" + size + "_" + TSPTools.getPathLength(arcs, bestPath) + ".csv");
+                TSPTools.savePathToFile(bestPath, rndSeed, size + "_" + TSPTools.getPathLength(arcs, bestPath) + ".csv");
             }
         }
-
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-                TSPTools.createAndShowGUI(TSPTools.getPolygonForPlotting(data, path, WINDOW_SIZE), WINDOW_SIZE,
-                        "TSP path, number of nodes: " + size + ", length: " + TSPTools.getPathLength(arcs, path));
+                TSPTools.createAndShowGUI(TSPTools.getPolygonForPlotting(data, bestPath, WINDOW_SIZE), WINDOW_SIZE,
+                        "TSP path, nodes: " + size + ", length: " + TSPTools.getPathLength(arcs, bestPath));
             }
         });
-
     }
 
     private static double tryRemoveAndInsert(double[][] arcs, int[] path) {
