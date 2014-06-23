@@ -8,13 +8,12 @@ public class TSPSolver {
     public static void main(String[] args) {
 
         final int[] data = TSPTools.readGraphFromCVSFile("../nodegen/1000_locations.csv");
-        final int coordinateSize = TSPTools.getMaxCoordSize(data);
 
-        int size = data.length / 2;
+        final int size = data.length / 2;
 
-        double[][] arcs = Arcs.getArray(data, size, size);
+        final double[][] arcs = Arcs.getArray(data, size, size);
 
-        int[] path = new int[size];
+        final int[] path = new int[size];
         final int[] bestPath = new int[size];
 
         double globalBest = Integer.MAX_VALUE;
@@ -44,7 +43,8 @@ public class TSPSolver {
 
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-                TSPTools.createAndShowGUI(TSPTools.getPolygonForPlotting(data, bestPath, WINDOW_SIZE), WINDOW_SIZE);
+                TSPTools.createAndShowGUI(TSPTools.getPolygonForPlotting(data, path, WINDOW_SIZE), WINDOW_SIZE,
+                        "TSP path, number of nodes: " + size + ", length: " + TSPTools.getPathLength(arcs, path));
             }
         });
 
