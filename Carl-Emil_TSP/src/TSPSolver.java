@@ -8,7 +8,6 @@ public class TSPSolver {
     public static void main(String[] args) {
 
         final int[] data = TSPTools.readGraphFromCVSFile("../nodegen/1000_locations.csv");
-        final int coordinateSize = TSPTools.getMaxCoordSize(data);
 
         int size = data.length / 2;
 
@@ -18,7 +17,7 @@ public class TSPSolver {
         final int[] bestPath = new int[size];
 
         double globalBest = Integer.MAX_VALUE;
-        for (int n = 0; n < 1; n++) {
+        for (int n = 0; n < 10000000; n++) {
             rndSeed = System.currentTimeMillis();
             TSPTools.getRandomizedStartPath(path, rndSeed);
 
@@ -37,16 +36,18 @@ public class TSPSolver {
                     bestPath[i] = path[i];
                 }
 
+                if(globalBest<24700){
                 TSPTools.savePathToFile(bestPath, rndSeed,
                         "result_" + size + "_" + TSPTools.getPathLength(arcs, bestPath) + ".csv");
+                    SwingUtilities.invokeLater(new Runnable() {
+                        public void run() {
+                            TSPTools.createAndShowGUI(TSPTools.getPolygonForPlotting(data, bestPath, WINDOW_SIZE), WINDOW_SIZE);
+                        }
+                    });
+                }
             }
         }
 
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                TSPTools.createAndShowGUI(TSPTools.getPolygonForPlotting(data, bestPath, WINDOW_SIZE), WINDOW_SIZE);
-            }
-        });
 
     }
 
